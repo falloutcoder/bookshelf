@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { SHELVES } from './constants';
+import { SHELVES, SHELVES_DISPLAY_NAME } from './constants';
 
 class Book extends PureComponent {
   static propTypes = {
@@ -16,13 +16,13 @@ class Book extends PureComponent {
         <div className="book-top">
           <img className="book-cover"
                src={ this.props.thumbnail }
-               alt={ this.props.title + "Image Thumbnail" } />
+               alt={ `${this.props.title} thumbnail` } />
           <div className="book-shelf-changer">
             <select value={ this.props.shelf }>
               <option value="none" disabled>Move to...</option>
-              <option value={ SHELVES.currentlyReading }>Currently Reading</option>
-              <option value={ SHELVES.wantToRead }>Want to Read</option>
-              <option value={ SHELVES.read }>Read</option>
+              <option value={ SHELVES.currentlyReading }>{ SHELVES_DISPLAY_NAME[SHELVES.currentlyReading] }</option>
+              <option value={ SHELVES.wantToRead }>{ SHELVES_DISPLAY_NAME[SHELVES.wantToRead] }</option>
+              <option value={ SHELVES.read }>{ SHELVES_DISPLAY_NAME[SHELVES.read] }</option>
               <option value="none">None</option>
             </select>
           </div>
