@@ -36,9 +36,9 @@ class BooksSearch extends PureComponent {
             }
           }).catch(
             err => {
-              this.setState({ searchResults: [], noResultsFound: false });
-              console.log(`Something went wrong with search endpoint: ${err}`);
-              });
+              this.setState({ searchResults: [], noResultsFound: true });
+              console.error(`Something went wrong with search endpoint. ${err}`);
+            });
       }
     );
   }

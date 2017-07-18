@@ -3,6 +3,7 @@ import * as BooksAPI from './BooksAPI';
 import { Route } from 'react-router-dom'
 import BooksList from './BooksList';
 import BooksSearch from './BooksSearch';
+import Loading from './Loading';
 import './App.css';
 
 class BooksApp extends React.Component {
@@ -11,7 +12,8 @@ class BooksApp extends React.Component {
     super(props);
     this.state = {
       books: [],
-      shelves: {}
+      shelves: {},
+      isLoading: false
     }
     this.moveBookToShelf = this.moveBookToShelf.bind(this);
   }
@@ -21,12 +23,16 @@ class BooksApp extends React.Component {
   }
 
   getAllShelfBooks() {
+    this.setState({ isLoading: true });
     BooksAPI.getAll().then(
       books => {
-        this.setState({ books });
-        this.setState({ shelves: this.groupBooksByShelf(books) });
+        this.setState({ books, shelves: this.groupBooksByShelf(books), isLoading: false });
       }
-    ).catch(err => console.log(`Something went wrong with get all books endpoint: ${err}`));
+    ).catch(
+      err => {
+        console.error(`Something went wrong with get all books endpoint. ${err}`);
+        this.setState({ isLoading: false });
+      });
   }
 
   groupBooksByShelf(books) {
@@ -38,6 +44,7 @@ class BooksApp extends React.Component {
   }
 
   moveBookToShelf(selectedBook, shelf) {
+    this.setState({ isLoading: true });
     BooksAPI.update(selectedBook, shelf).then(
       data => this.setState({ shelves: data },
         this.setState(
@@ -49,26 +56,35 @@ class BooksApp extends React.Component {
                 books: [
                   ...books.slice(0, index),
                   Object.assign({}, books[index], { shelf: shelf }),
-                  ...books.slice(index + 1)
-                ]
+                  ...books.slice(index + 1)],
+                isLoading: false
               }
             } else {
-              return { books: [...books, Object.assign({}, selectedBook, { shelf: shelf })]}
+              return {
+                books: [...books, Object.assign({}, selectedBook, { shelf: shelf })],
+                isLoading: false
+              }
             }
           }
         )
       )
-    ).catch(err => console.log(`Something went wrong with update books endpoint: ${err}`));
+    ).catch(
+      err => {
+        console.error(`Something went wrong with update books endpoint. ${err}`);
+        this.setState({ isLoading: false });
+      });
   }
 
   render() {
+    const { books, shelves, isLoading } = this.state;
     return (
       <div className="app">
+        { isLoading && <Loading />}
         <Route exact path='/' render={() => (
-          <BooksList books={ this.state.books } moveBookToShelf={ this.moveBookToShelf } />)}
+          <BooksList books={ books } moveBookToShelf={ this.moveBookToShelf } />)}
         />
         <Route exact path='/search' render={() => (
-          <BooksSearch shelves={ this.state.shelves } moveBookToShelf={ this.moveBookToShelf } />)}
+          <BooksSearch shelves={ shelves } moveBookToShelf={ this.moveBookToShelf } />)}
         />
       </div>
     )

@@ -9,6 +9,43 @@ body, .app {
   color: #333333;
 }
 
+.loading {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background:rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.loading-animation {
+  height: 400px;
+  width: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #fe3100;
+  text-align: center;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  position: relative;
+  background: #333;
+  text-transform: uppercase;
+}
+
+.loading-animation div.loader {
+  height: 350px;
+  width: 350px;
+  background: url('./gif/loading_animation.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* main page */
 
 .list-books-title {
