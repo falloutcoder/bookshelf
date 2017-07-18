@@ -15,6 +15,8 @@ class BooksList extends PureComponent {
       <div className="list-books">
         <div className="list-books-title">
           <h1>MyReads</h1>
+          <div className="list-books-logo" />
+          <div className="list-books-logo logo2" />
         </div>
         <div className="list-books-content">
           <div>
