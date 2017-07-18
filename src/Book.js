@@ -5,6 +5,7 @@ import { SHELVES, SHELVES_DISPLAY_NAME } from './constants';
 class Book extends PureComponent {
   static propTypes = {
     book: PropTypes.object.isRequired,
+    shelf: PropTypes.string,
     onMove: PropTypes.func.isRequired
   }
 
@@ -16,7 +17,7 @@ class Book extends PureComponent {
                src={ this.props.book.imageLinks.thumbnail }
                alt={ `${this.props.book.title} thumbnail` } />
           <div className="book-shelf-changer">
-            <select value={ this.props.book.shelf }
+            <select value={ this.props.shelf || this.props.book.shelf }
                     onChange={ e => this.props.onMove(this.props.book, e.target.value) }>
               <option value="none" disabled>Move to...</option>
               <option value={ SHELVES.currentlyReading }>{ SHELVES_DISPLAY_NAME[SHELVES.currentlyReading] }</option>
