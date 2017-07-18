@@ -4,10 +4,8 @@ import { SHELVES, SHELVES_DISPLAY_NAME } from './constants';
 
 class Book extends PureComponent {
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    authors: PropTypes.array.isRequired,
-    thumbnail: PropTypes.string.isRequired,
-    shelf: PropTypes.string.isRequired
+    book: PropTypes.object.isRequired,
+    onMove: PropTypes.func.isRequired
   }
 
   render() {
@@ -15,10 +13,11 @@ class Book extends PureComponent {
       <div className="book">
         <div className="book-top">
           <img className="book-cover"
-               src={ this.props.thumbnail }
-               alt={ `${this.props.title} thumbnail` } />
+               src={ this.props.book.imageLinks.thumbnail }
+               alt={ `${this.props.book.title} thumbnail` } />
           <div className="book-shelf-changer">
-            <select value={ this.props.shelf }>
+            <select value={ this.props.book.shelf }
+                    onChange={ e => this.props.onMove(this.props.book, e.target.value) }>
               <option value="none" disabled>Move to...</option>
               <option value={ SHELVES.currentlyReading }>{ SHELVES_DISPLAY_NAME[SHELVES.currentlyReading] }</option>
               <option value={ SHELVES.wantToRead }>{ SHELVES_DISPLAY_NAME[SHELVES.wantToRead] }</option>
@@ -27,8 +26,8 @@ class Book extends PureComponent {
             </select>
           </div>
         </div>
-        <div className="book-title">{ this.props.title }</div>
-        <div className="book-authors">{ this.props.authors.join(', ') }</div>
+        <div className="book-title">{ this.props.book.title }</div>
+        <div className="book-authors">{ this.props.book.authors.join(', ') }</div>
       </div>
     );
   }

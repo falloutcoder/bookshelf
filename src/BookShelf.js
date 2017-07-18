@@ -6,7 +6,8 @@ import { SHELVES_DISPLAY_NAME } from './constants';
 class BookShelf extends PureComponent {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    shelf: PropTypes.string.isRequired
+    shelf: PropTypes.string.isRequired,
+    moveBookToShelf: PropTypes.func.isRequired
   }
 
   render() {
@@ -17,10 +18,8 @@ class BookShelf extends PureComponent {
           <ol className="books-grid">
             {this.props.books.filter(book => book.shelf === this.props.shelf).map(book => (
                <li key={ book.id }>
-                <Book title={ book.title }
-                  authors={ book.authors }
-                  shelf={ book.shelf }
-                  thumbnail={ book.imageLinks.thumbnail }
+                <Book book={ book }
+                      onMove={ this.props.moveBookToShelf }
                 />
               </li>)
             )}

@@ -6,7 +6,8 @@ import { SHELVES } from './constants';
 
 class BooksList extends PureComponent {
   static propTypes = {
-    books: PropTypes.array.isRequired
+    books: PropTypes.array.isRequired,
+    moveBookToShelf: PropTypes.func.isRequired
   }
 
   render() {
@@ -17,9 +18,15 @@ class BooksList extends PureComponent {
         </div>
         <div className="list-books-content">
           <div>
-            <BookShelf books={ this.props.books } shelf={SHELVES.currentlyReading} />
-            <BookShelf books={ this.props.books } shelf={SHELVES.wantToRead} />
-            <BookShelf books={ this.props.books } shelf={SHELVES.read} />
+            <BookShelf books={ this.props.books }
+                       shelf={SHELVES.currentlyReading}
+                       moveBookToShelf={ this.props.moveBookToShelf } />
+            <BookShelf books={ this.props.books }
+                       shelf={SHELVES.wantToRead}
+                       moveBookToShelf={ this.props.moveBookToShelf } />
+            <BookShelf books={ this.props.books }
+                       shelf={SHELVES.read}
+                       moveBookToShelf={ this.props.moveBookToShelf } />
           </div>
         </div>
         <div className="open-search">
