@@ -65,7 +65,9 @@ class BooksSearch extends PureComponent {
           </div>
         </div>
         <div className="search-books-results">
-          { this.state.noResultsFound && <div>No book found for searched Name/Author</div>}
+          { this.state.noResultsFound &&
+            <div className="no-books-found">No book found for searched title or author</div>
+          }
           { this.state.searchResults.length !== 0 &&
             <ol className="books-grid" >
               {this.state.searchResults.map(book => (

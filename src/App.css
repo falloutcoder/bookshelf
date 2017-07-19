@@ -46,6 +46,28 @@ body, .app {
   transform: translate(-50%, -50%);
 }
 
+.no-books-found {
+  color: #86181d;
+  background-color: #ffdce0;
+  border-color: rgba(27, 31, 35, 0.15);
+  line-height: 40px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.no-books-found::before {
+  content: "";
+  display: inline-block;
+  background: url('./icons/warning.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+  height: 40px;
+  width: 40px;
+  background-size: cover;
+  margin: 0px 10px;
+}
+
 /* main page */
 
 .list-books-title {
