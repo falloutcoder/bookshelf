@@ -21,9 +21,7 @@ class BooksSearch extends PureComponent {
   }
 
   onBookSearch(query) {
-    this.setState(
-      (prevState) => ({searchQuery: query, searchId: ++prevState.searchId }),
-      () => {
+    const searchBooks = () => {
         const searchId = this.state.searchId;
         search(query).then(
           response => {
@@ -39,12 +37,15 @@ class BooksSearch extends PureComponent {
               this.setState({ searchResults: [], noResultsFound: true });
               console.error(`Something went wrong with search endpoint. ${err}`);
             });
-      }
+    }
+    this.setState(
+      (prevState) => ({searchQuery: query, searchId: ++prevState.searchId }),
+      () => query.length ? searchBooks() : this.setState({ noResultsFound: false })
     );
   }
 
   findBookOnShelf(book) {
-    for (let shelf in this.props.shelves) {
+    for (const shelf in this.props.shelves) {
       if (this.props.shelves[shelf].indexOf(book.id) > -1) {
         return shelf;
       }
