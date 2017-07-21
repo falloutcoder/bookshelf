@@ -18,8 +18,8 @@ body, .app {
 }
 
 .loading-animation {
-  height: 400px;
-  width: 400px;
+  height: 250px;
+  width: 250px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -35,15 +35,16 @@ body, .app {
 }
 
 .loading-animation div.loader {
-  height: 350px;
-  width: 350px;
+  height: 150px;
+  width: 150px;
   background: url('./gif/loading_animation.gif');
-  background-repeat: no-repeat;
-  background-position: center;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .no-books-found {
@@ -66,6 +67,53 @@ body, .app {
   width: 40px;
   background-size: cover;
   margin: 0px 10px;
+}
+
+.select-books {
+  position: fixed;
+  right: 25px;
+  bottom: 100px;
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #fe3201;
+  background-image: url('./icons/selection.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  font-size: 0;
+}
+
+.selected-books-action {
+  position: fixed;
+  right: 25px;
+  bottom: 100px;
+  border-radius: 5px;
+}
+
+.selected-books-move {
+  background: url('./icons/move.svg');
+  margin-bottom: 20px;
+  background-size: 30px;
+}
+
+.selected-books-cancel {
+  background: url('./icons/cancel.svg');
+  background-size: 20px;
+}
+
+.selected-books-move, .selected-books-cancel {
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  background-color: #fe3201;
+  vertical-align: middle;
+  color: transparent;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 /* main page */
@@ -98,7 +146,7 @@ body, .app {
 }
 
 .list-books-content {
-  padding: 0 0 80px;
+  padding: 50px 10%;
   flex: 1;
 }
 
@@ -114,9 +162,13 @@ body, .app {
 
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
+  color: #fe3201;
+  text-align: center;
 }
 .bookshelf-books {
   text-align: center;
+  box-shadow: 0 17px 21px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background-color: whitesmoke;
 }
 
 .open-search {
@@ -242,6 +294,10 @@ body, .app {
 .book-cover {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background: #eee;
+}
+.book-cover:hover {
+  cursor: pointer;
+  outline: 2px solid #fe3201
 }
 .book-cover-title {
   padding: 20px 10px 0;
