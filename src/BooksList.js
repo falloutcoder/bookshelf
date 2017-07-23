@@ -7,7 +7,11 @@ import { SHELVES } from './constants';
 class BooksList extends PureComponent {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    moveBookToShelf: PropTypes.func.isRequired
+    isSelectMode: PropTypes.bool.isRequired,
+    moveBookToShelf: PropTypes.func.isRequired,
+    selectedBooks: PropTypes.array.isRequired,
+    switchOffSelectMode: PropTypes.func.isRequired,
+    onBookSelectUnselect: PropTypes.func.isRequired
   }
 
   render() {
@@ -22,17 +26,26 @@ class BooksList extends PureComponent {
           <div>
             <BookShelf books={ this.props.books }
                        shelf={SHELVES.currentlyReading}
+                       selectedBooks={ this.props.selectedBooks }
+                       isSelectMode={ this.props.isSelectMode }
+                       onBookSelectUnselect={ this.props.onBookSelectUnselect }
                        moveBookToShelf={ this.props.moveBookToShelf } />
             <BookShelf books={ this.props.books }
                        shelf={SHELVES.wantToRead}
+                       selectedBooks={ this.props.selectedBooks }
+                       isSelectMode={ this.props.isSelectMode }
+                       onBookSelectUnselect={ this.props.onBookSelectUnselect }
                        moveBookToShelf={ this.props.moveBookToShelf } />
             <BookShelf books={ this.props.books }
                        shelf={SHELVES.read}
+                       selectedBooks={ this.props.selectedBooks }
+                       isSelectMode={ this.props.isSelectMode }
+                       onBookSelectUnselect={ this.props.onBookSelectUnselect }
                        moveBookToShelf={ this.props.moveBookToShelf } />
           </div>
         </div>
         <div className="open-search">
-          <Link to="/search">Add a book</Link>
+          <Link to="/search" onClick={ this.props.switchOffSelectMode }>Add a book</Link>
         </div>
       </div>
     );

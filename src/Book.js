@@ -5,8 +5,21 @@ import { SHELVES, SHELVES_DISPLAY_NAME } from './constants';
 class Book extends PureComponent {
   static propTypes = {
     book: PropTypes.object.isRequired,
+    onMove: PropTypes.func.isRequired,
     shelf: PropTypes.string,
-    onMove: PropTypes.func.isRequired
+    isSelectMode: PropTypes.bool,
+    selectedBooks: PropTypes.array,
+    onBookSelectUnselect: PropTypes.func
+  }
+
+  isBookSelected = (bookId) => (
+    this.props.isSelectMode && this.props.selectedBooks.indexOf(this.props.book.id) > -1 ? true : false
+  )
+
+  onBookSelectUnselect = () => {
+    if (this.props.isSelectMode) {
+      this.props.onBookSelectUnselect(this.props.book.id);
+    }
   }
 
   render() {
@@ -15,7 +28,9 @@ class Book extends PureComponent {
         <div className="book-top">
           <img className="book-cover"
                src={ this.props.book.imageLinks.thumbnail }
-               alt={ `${this.props.book.title} thumbnail` } />
+               alt={ `${this.props.book.title} thumbnail` }
+               onClick={ this.onBookSelectUnselect } />
+          {this.isBookSelected() && <div className="book-selected-tick" />}
           <div className="book-shelf-changer">
             <select value={ this.props.shelf || this.props.book.shelf }
                     onChange={ e => this.props.onMove(this.props.book, e.target.value) }>

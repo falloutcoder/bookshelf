@@ -20,7 +20,7 @@ class BooksSearch extends PureComponent {
     }
   }
 
-  onBookSearch(query) {
+  onBookSearch = (query) => {
     const searchBooks = () => {
         const searchId = this.state.searchId;
         search(query).then(
@@ -44,7 +44,7 @@ class BooksSearch extends PureComponent {
     );
   }
 
-  findBookOnShelf(book) {
+  findBookOnShelf = (book) => {
     for (const shelf in this.props.shelves) {
       if (this.props.shelves[shelf].indexOf(book.id) > -1) {
         return shelf;

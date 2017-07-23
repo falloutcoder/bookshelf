@@ -102,6 +102,7 @@ body, .app {
 .selected-books-cancel {
   background: url('./icons/cancel.svg');
   background-size: 20px;
+  cursor: pointer;
 }
 
 .selected-books-move, .selected-books-cancel {
@@ -266,6 +267,21 @@ body, .app {
   height: 200px;
   display: flex;
   align-items: flex-end;
+}
+
+.book-selected-tick {
+  position: absolute;
+  right: 0;
+  top: 80px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fe3100;
+  background-image: url('./icons/tick.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .book-shelf-changer {

@@ -3,6 +3,7 @@ import * as BooksAPI from './BooksAPI';
 import { Route } from 'react-router-dom'
 import BooksList from './BooksList';
 import BooksSearch from './BooksSearch';
+import BooksSelector from './BooksSelector';
 import Loading from './Loading';
 import './App.css';
 
@@ -13,16 +14,17 @@ class BooksApp extends React.Component {
     this.state = {
       books: [],
       shelves: {},
-      isLoading: false
+      isLoading: false,
+      selectedBooks: [],
+      isSelectMode: false,
     }
-    this.moveBookToShelf = this.moveBookToShelf.bind(this);
   }
 
   componentDidMount() {
     this.getAllShelfBooks();
   }
 
-  getAllShelfBooks() {
+  getAllShelfBooks = () => {
     this.setState({ isLoading: true });
     BooksAPI.getAll().then(
       books => {
@@ -35,7 +37,7 @@ class BooksApp extends React.Component {
       });
   }
 
-  groupBooksByShelf(books) {
+  groupBooksByShelf = (books) => {
     let groupedBooks = {};
     books.forEach(book => groupedBooks[book.shelf] ?
                             groupedBooks[book.shelf].push(book.id)
@@ -43,7 +45,41 @@ class BooksApp extends React.Component {
     return groupedBooks;
   }
 
-  moveBookToShelf(selectedBook, shelf) {
+  onSelectModeToggle = () => {
+    this.setState(prevState => ({
+        isSelectMode: !prevState.isSelectMode,
+        selectedBooks: []
+      })
+    );
+  }
+
+  switchOffSelectMode = () => {
+    this.setState({
+        isSelectMode: false,
+        selectedBooks: []
+      })
+  }
+
+  onBookSelectUnselect = (bookId) => {
+    const selectedPreviously = this.state.selectedBooks.indexOf(bookId);
+    if (selectedPreviously < 0) {
+      this.setState(
+        prevState => ({ selectedBooks: [...prevState.selectedBooks, bookId] })
+      );
+    } else {
+      this.setState(
+        prevState => (
+          {
+            selectedBooks: [
+              ...prevState.selectedBooks.slice(0, selectedPreviously),
+              ...prevState.selectedBooks.slice(selectedPreviously + 1),
+            ]
+          }
+      ));
+    }
+  }
+
+  moveBookToShelf = (selectedBook, shelf) => {
     this.setState({ isLoading: true });
     BooksAPI.update(selectedBook, shelf).then(
       data => this.setState({ shelves: data },
@@ -75,16 +111,42 @@ class BooksApp extends React.Component {
       });
   }
 
+  onBulkMoveBooks = (shelf) => {
+    // Update the backend for all moved books and then request for all books on updated shelf
+    this.setState({ isLoading: true });
+    const moveAllBooksAction = Promise.all(
+      this.state.selectedBooks.map(
+        id => BooksAPI.update({ id }, shelf))
+    );
+    const completionAction = () => this.setState(
+      { selectedBooks: [], isSelectMode: false},  this.getAllShelfBooks());
+    // Perform same action even in case of any promise rejection instead of notifying user of failure
+    moveAllBooksAction.then(() => completionAction()).catch(() => completionAction());
+  }
+
   render() {
     const { books, shelves, isLoading } = this.state;
     return (
       <div className="app">
         { isLoading && <Loading />}
         <Route exact path='/' render={() => (
-          <BooksList books={ books } moveBookToShelf={ this.moveBookToShelf } />)}
+          <BooksList books={ books }
+                     isSelectMode={ this.state.isSelectMode }
+                     selectedBooks={ this.state.selectedBooks }
+                     onBookSelectUnselect={ this.onBookSelectUnselect }
+                     switchOffSelectMode={ this.switchOffSelectMode }
+                     moveBookToShelf={ this.moveBookToShelf } />)}
         />
         <Route exact path='/search' render={() => (
-          <BooksSearch shelves={ shelves } moveBookToShelf={ this.moveBookToShelf } />)}
+          <BooksSearch shelves={ shelves }
+                       moveBookToShelf={ this.moveBookToShelf } />)}
+        />
+        <Route exact path='/' render={() => (
+          <BooksSelector isSelectMode={ this.state.isSelectMode }
+                         selectedBooks={ this.state.selectedBooks }
+                         onBulkMoveBooks={ this.onBulkMoveBooks }
+                         onSelectModeToggle={ this.onSelectModeToggle }
+          />)}
         />
       </div>
     )

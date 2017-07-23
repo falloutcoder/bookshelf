@@ -7,7 +7,10 @@ class BookShelf extends PureComponent {
   static propTypes = {
     books: PropTypes.array.isRequired,
     shelf: PropTypes.string.isRequired,
-    moveBookToShelf: PropTypes.func.isRequired
+    isSelectMode: PropTypes.bool.isRequired,
+    moveBookToShelf: PropTypes.func.isRequired,
+    selectedBooks: PropTypes.array.isRequired,
+    onBookSelectUnselect: PropTypes.func.isRequired
   }
 
   render() {
@@ -18,7 +21,12 @@ class BookShelf extends PureComponent {
           <ol className="books-grid">
             {this.props.books.filter(book => book.shelf === this.props.shelf).map(book => (
                <li key={ book.id }>
-                <Book book={ book } onMove={ this.props.moveBookToShelf } />
+                <Book book={ book }
+                      onMove={ this.props.moveBookToShelf }
+                      isSelectMode={ this.props.isSelectMode }
+                      selectedBooks={ this.props.selectedBooks }
+                      onBookSelectUnselect={ this.props.onBookSelectUnselect }
+                />
               </li>)
             )}
           </ol>
