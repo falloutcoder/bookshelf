@@ -1,16 +1,16 @@
-import React from 'react';
-import * as BooksAPI from './BooksAPI';
+import React from 'react'
+import * as BooksAPI from './BooksAPI'
 import { Route } from 'react-router-dom'
-import BooksList from './BooksList';
-import BooksSearch from './BooksSearch';
-import BooksSelector from './BooksSelector';
-import Loading from './Loading';
-import './App.css';
+import BooksList from './BooksList'
+import BooksSearch from './BooksSearch'
+import BooksSelector from './BooksSelector'
+import Loading from './Loading'
+import './App.css'
 
 class BooksApp extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       books: [],
       shelves: {},
@@ -21,28 +21,28 @@ class BooksApp extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllShelfBooks();
+    this.getAllShelfBooks()
   }
 
   getAllShelfBooks = () => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true })
     BooksAPI.getAll().then(
       books => {
-        this.setState({ books, shelves: this.groupBooksByShelf(books), isLoading: false });
+        this.setState({ books, shelves: this.groupBooksByShelf(books), isLoading: false })
       }
     ).catch(
       err => {
-        console.error(`Something went wrong with get all books endpoint. ${err}`);
-        this.setState({ isLoading: false });
-      });
+        console.error(`Something went wrong with get all books endpoint. ${err}`)
+        this.setState({ isLoading: false })
+      })
   }
 
   groupBooksByShelf = (books) => {
-    let groupedBooks = {};
+    let groupedBooks = {}
     books.forEach(book => groupedBooks[book.shelf] ?
                             groupedBooks[book.shelf].push(book.id)
-                            : groupedBooks[book.shelf] = [book.id]);
-    return groupedBooks;
+                            : groupedBooks[book.shelf] = [book.id])
+    return groupedBooks
   }
 
   onSelectModeToggle = () => {
@@ -50,7 +50,7 @@ class BooksApp extends React.Component {
         isSelectMode: !prevState.isSelectMode,
         selectedBooks: []
       })
-    );
+    )
   }
 
   switchOffSelectMode = () => {
@@ -61,11 +61,11 @@ class BooksApp extends React.Component {
   }
 
   onBookSelectUnselect = (bookId) => {
-    const selectedPreviously = this.state.selectedBooks.indexOf(bookId);
+    const selectedPreviously = this.state.selectedBooks.indexOf(bookId)
     if (selectedPreviously < 0) {
       this.setState(
         prevState => ({ selectedBooks: [...prevState.selectedBooks, bookId] })
-      );
+      )
     } else {
       this.setState(
         prevState => (
@@ -75,18 +75,18 @@ class BooksApp extends React.Component {
               ...prevState.selectedBooks.slice(selectedPreviously + 1),
             ]
           }
-      ));
+      ))
     }
   }
 
   moveBookToShelf = (selectedBook, shelf) => {
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true })
     BooksAPI.update(selectedBook, shelf).then(
       data => this.setState({ shelves: data },
         this.setState(
           state => {
-            const books = state.books;
-            const index = books.findIndex(book => book.id === selectedBook.id);
+            const books = state.books
+            const index = books.findIndex(book => book.id === selectedBook.id)
             if (index > -1) {
               return {
                 books: [
@@ -106,28 +106,28 @@ class BooksApp extends React.Component {
       )
     ).catch(
       err => {
-        console.error(`Something went wrong with update books endpoint. ${err}`);
-        this.setState({ isLoading: false });
-      });
+        console.error(`Something went wrong with update books endpoint. ${err}`)
+        this.setState({ isLoading: false })
+      })
   }
 
   onBulkMoveBooks = (shelf) => {
     // Update the backend for all moved books and then request for all books on updated shelf
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true })
     const moveAllBooksAction = Promise.all(
       this.state.selectedBooks.map(
         id => BooksAPI.update({ id }, shelf))
-    );
+    )
     const completionAction = () => this.setState(
-      { selectedBooks: [], isSelectMode: false},  this.getAllShelfBooks());
+      { selectedBooks: [], isSelectMode: false},  this.getAllShelfBooks())
     // Perform same action even in case of any promise rejection instead of notifying user of failure
-    moveAllBooksAction.then(() => completionAction()).catch(() => completionAction());
+    moveAllBooksAction.then(() => completionAction()).catch(() => completionAction())
   }
 
   render() {
-    const { books, shelves, isLoading } = this.state;
+    const { books, shelves, isLoading } = this.state
     return (
-      <div className="app">
+      <div className='app'>
         { isLoading && <Loading />}
         <Route exact path='/' render={() => (
           <BooksList books={ books }
@@ -153,4 +153,4 @@ class BooksApp extends React.Component {
   }
 }
 
-export default BooksApp;
+export default BooksApp

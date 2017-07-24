@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import Book from './Book';
-import { search } from './BooksAPI';
+import Book from './Book'
+import { search } from './BooksAPI'
 
 class BooksSearch extends PureComponent {
   static propTypes = {
@@ -11,7 +11,7 @@ class BooksSearch extends PureComponent {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       searchQuery: '',
       searchResults: [],
@@ -22,55 +22,55 @@ class BooksSearch extends PureComponent {
 
   onBookSearch = (query) => {
     const searchBooks = () => {
-        const searchId = this.state.searchId;
+        const searchId = this.state.searchId
         search(query).then(
           response => {
             if (searchId === this.state.searchId) {
               if (response.error) {
-                this.setState({ searchResults: [], noResultsFound: true });
+                this.setState({ searchResults: [], noResultsFound: true })
               } else {
-                this.setState({ searchResults: response, noResultsFound: false });
+                this.setState({ searchResults: response, noResultsFound: false })
               }
             }
           }).catch(
             err => {
-              this.setState({ searchResults: [], noResultsFound: true });
-              console.error(`Something went wrong with search endpoint. ${err}`);
-            });
+              this.setState({ searchResults: [], noResultsFound: true })
+              console.error(`Something went wrong with search endpoint. ${err}`)
+            })
     }
     this.setState(
       (prevState) => ({searchQuery: query, searchId: ++prevState.searchId }),
       () => query.length ? searchBooks() : this.setState({ noResultsFound: false })
-    );
+    )
   }
 
   findBookOnShelf = (book) => {
     for (const shelf in this.props.shelves) {
       if (this.props.shelves[shelf].indexOf(book.id) > -1) {
-        return shelf;
+        return shelf
       }
     }
-    return null;
+    return null
   }
 
   render() {
     return (
-      <div className="search-books">
-        <div className="search-books-bar">
-          <Link to="/" className="close-search">Close</Link>
-          <div className="search-books-input-wrapper">
-            <input type="text"
+      <div className='search-books'>
+        <div className='search-books-bar'>
+          <Link to='/' className='close-search'>Close</Link>
+          <div className='search-books-input-wrapper'>
+            <input type='text'
                    value={ this.state.searchQuery }
                    onChange={ e => this.onBookSearch(e.target.value) }
-                   placeholder="Search by title or author"/>
+                   placeholder='Search by title or author'/>
           </div>
         </div>
-        <div className="search-books-results">
+        <div className='search-books-results'>
           { this.state.noResultsFound &&
-            <div className="no-books-found">No book found for searched title or author</div>
+            <div className='no-books-found'>No book found for searched title or author</div>
           }
           { this.state.searchResults.length !== 0 &&
-            <ol className="books-grid" >
+            <ol className='books-grid'>
               {this.state.searchResults.map(book => (
                 <li key={ book.id }>
                   <Book book={ book }
@@ -83,8 +83,8 @@ class BooksSearch extends PureComponent {
           }
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default BooksSearch;
+export default BooksSearch

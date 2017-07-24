@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import BookShelf from './BookShelf';
-import { SHELVES } from './constants';
+import BookShelf from './BookShelf'
+import { SHELVES } from './constants'
 
 class BooksList extends PureComponent {
   static propTypes = {
@@ -16,13 +16,13 @@ class BooksList extends PureComponent {
 
   render() {
     return (
-      <div className="list-books">
-        <div className="list-books-title">
+      <div className='list-books'>
+        <div className='list-books-title'>
           <h1>MyReads</h1>
-          <div className="list-books-logo" />
-          <div className="list-books-logo logo2" />
+          <div className='list-books-logo' />
+          <div className='list-books-logo logo2' />
         </div>
-        <div className="list-books-content">
+        <div className='list-books-content'>
           <div>
             <BookShelf books={ this.props.books }
                        shelf={SHELVES.currentlyReading}
@@ -44,12 +44,12 @@ class BooksList extends PureComponent {
                        moveBookToShelf={ this.props.moveBookToShelf } />
           </div>
         </div>
-        <div className="open-search">
-          <Link to="/search" onClick={ this.props.switchOffSelectMode }>Add a book</Link>
+        <div className='open-search'>
+          <Link to='/search' onClick={ this.props.switchOffSelectMode }>Add a book</Link>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default BooksList;
+export default BooksList
