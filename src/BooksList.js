@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import BookShelf from './BookShelf'
-import { SHELVES } from './constants'
+import { SHELVES, SHELVES_DISPLAY_NAME } from './constants'
 
 class BooksList extends PureComponent {
   static propTypes = {
@@ -24,20 +24,20 @@ class BooksList extends PureComponent {
         </div>
         <div className='list-books-content'>
           <div>
-            <BookShelf books={ this.props.books }
-                       shelf={SHELVES.currentlyReading}
+            <BookShelf books={ this.props.books.filter(book => book.shelf === SHELVES.currentlyReading) }
+                       title={ SHELVES_DISPLAY_NAME[SHELVES.currentlyReading] }
                        selectedBooks={ this.props.selectedBooks }
                        isSelectMode={ this.props.isSelectMode }
                        onBookSelectUnselect={ this.props.onBookSelectUnselect }
                        moveBookToShelf={ this.props.moveBookToShelf } />
-            <BookShelf books={ this.props.books }
-                       shelf={SHELVES.wantToRead}
+            <BookShelf books={ this.props.books.filter(book => book.shelf === SHELVES.wantToRead) }
+                       title={ SHELVES_DISPLAY_NAME[SHELVES.wantToRead] }
                        selectedBooks={ this.props.selectedBooks }
                        isSelectMode={ this.props.isSelectMode }
                        onBookSelectUnselect={ this.props.onBookSelectUnselect }
                        moveBookToShelf={ this.props.moveBookToShelf } />
-            <BookShelf books={ this.props.books }
-                       shelf={SHELVES.read}
+            <BookShelf books={ this.props.books.filter(book => book.shelf === SHELVES.read) }
+                       title={ SHELVES_DISPLAY_NAME[SHELVES.read] }
                        selectedBooks={ this.props.selectedBooks }
                        isSelectMode={ this.props.isSelectMode }
                        onBookSelectUnselect={ this.props.onBookSelectUnselect }

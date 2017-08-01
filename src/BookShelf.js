@@ -1,35 +1,28 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import Book from './Book'
-import { SHELVES_DISPLAY_NAME } from './constants'
+import BooksGrid from './BooksGrid'
 
 class BookShelf extends PureComponent {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    shelf: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     isSelectMode: PropTypes.bool.isRequired,
-    moveBookToShelf: PropTypes.func.isRequired,
     selectedBooks: PropTypes.array.isRequired,
+    moveBookToShelf: PropTypes.func.isRequired,
     onBookSelectUnselect: PropTypes.func.isRequired
   }
 
   render() {
     return (
       <div className='bookshelf'>
-        <h2 className='bookshelf-title'>{ SHELVES_DISPLAY_NAME[this.props.shelf] }</h2>
+        <h2 className='bookshelf-title'>{ this.props.title }</h2>
         <div className='bookshelf-books'>
-          <ol className='books-grid'>
-            {this.props.books.filter(book => book.shelf === this.props.shelf).map(book => (
-               <li key={ book.id }>
-                <Book book={ book }
-                      onMove={ this.props.moveBookToShelf }
-                      isSelectMode={ this.props.isSelectMode }
-                      selectedBooks={ this.props.selectedBooks }
-                      onBookSelectUnselect={ this.props.onBookSelectUnselect }
-                />
-              </li>)
-            )}
-          </ol>
+          <BooksGrid books={ this.props.books }
+                     onMove={ this.props.moveBookToShelf }
+                     isSelectMode={ this.props.isSelectMode }
+                     selectedBooks={ this.props.selectedBooks }
+                     onBookSelectUnselect={ this.props.onBookSelectUnselect }
+          />
       </div>
      </div>
     )

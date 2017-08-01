@@ -1,11 +1,12 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import BooksList from './BooksList'
 import BooksSearch from './BooksSearch'
 import BooksSelector from './BooksSelector'
 import Loading from './Loading'
 import './App.css'
+import PageNotFoundImage from './images/404.jpg'
 
 class BooksApp extends React.Component {
 
@@ -127,28 +128,40 @@ class BooksApp extends React.Component {
   render() {
     const { books, shelves, isLoading } = this.state
     return (
-      <div className='app'>
-        { isLoading && <Loading />}
+      <Switch>
         <Route exact path='/' render={() => (
-          <BooksList books={ books }
-                     isSelectMode={ this.state.isSelectMode }
-                     selectedBooks={ this.state.selectedBooks }
-                     onBookSelectUnselect={ this.onBookSelectUnselect }
-                     switchOffSelectMode={ this.switchOffSelectMode }
-                     moveBookToShelf={ this.moveBookToShelf } />)}
+          <div className='app'>
+            { isLoading && <Loading />}
+            <BooksList books={ books }
+                       isSelectMode={ this.state.isSelectMode }
+                       selectedBooks={ this.state.selectedBooks }
+                       onBookSelectUnselect={ this.onBookSelectUnselect }
+                       switchOffSelectMode={ this.switchOffSelectMode }
+                       moveBookToShelf={ this.moveBookToShelf }
+            />
+            <BooksSelector isSelectMode={ this.state.isSelectMode }
+                           selectedBooks={ this.state.selectedBooks }
+                           onBulkMoveBooks={ this.onBulkMoveBooks }
+                           onSelectModeToggle={ this.onSelectModeToggle }
+            />
+          </div>
+          )}
         />
         <Route exact path='/search' render={() => (
-          <BooksSearch shelves={ shelves }
-                       moveBookToShelf={ this.moveBookToShelf } />)}
+          <div className='app'>
+            { isLoading && <Loading />}
+              <BooksSearch shelves={ shelves }
+                           moveBookToShelf={ this.moveBookToShelf }
+              />
+          </div>)}
         />
-        <Route exact path='/' render={() => (
-          <BooksSelector isSelectMode={ this.state.isSelectMode }
-                         selectedBooks={ this.state.selectedBooks }
-                         onBulkMoveBooks={ this.onBulkMoveBooks }
-                         onSelectModeToggle={ this.onSelectModeToggle }
-          />)}
+        <Route render={() => (
+          <div className='app dark'>
+            <img className="page-not-found-404" src={ PageNotFoundImage } alt="404 - Page Not Found!"/>
+          </div>
+          )}
         />
-      </div>
+      </Switch>
     )
   }
 }

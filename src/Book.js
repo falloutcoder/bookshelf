@@ -27,8 +27,8 @@ class Book extends PureComponent {
       <div className='book'>
         <div className='book-top'>
           <img className='book-cover'
-               src={ this.props.book.imageLinks.thumbnail }
-               alt={ `${this.props.book.title} thumbnail` }
+               src={ this.props.book.imageLinks && this.props.book.imageLinks.thumbnail }
+               alt={ `${this.props.book.title} - Book Cover Not Available` }
                onClick={ this.onBookSelectUnselect } />
           {this.isBookSelected() && <div className='book-selected-tick' />}
           <div className='book-shelf-changer'>
@@ -43,7 +43,7 @@ class Book extends PureComponent {
           </div>
         </div>
         <div className='book-title'>{ this.props.book.title }</div>
-        <div className='book-authors'>{ this.props.book.authors.join(', ') }</div>
+        <div className='book-authors'>{ this.props.book.authors && this.props.book.authors.join(', ') }</div>
       </div>
     )
   }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import Book from './Book'
+import BooksGrid from './BooksGrid'
 import { search } from './BooksAPI'
 
 class BooksSearch extends PureComponent {
@@ -40,7 +40,7 @@ class BooksSearch extends PureComponent {
     }
     this.setState(
       (prevState) => ({searchQuery: query, searchId: ++prevState.searchId }),
-      () => query.length ? searchBooks() : this.setState({ noResultsFound: false })
+      () => query.length ? searchBooks() : this.setState({ searchResults: [], noResultsFound: false })
     )
   }
 
@@ -70,16 +70,10 @@ class BooksSearch extends PureComponent {
             <div className='no-books-found'>No book found for searched title or author</div>
           }
           { this.state.searchResults.length !== 0 &&
-            <ol className='books-grid'>
-              {this.state.searchResults.map(book => (
-                <li key={ book.id }>
-                  <Book book={ book }
-                        shelf={ this.findBookOnShelf(book) }
-                        onMove={ this.props.moveBookToShelf }
-                  />
-                </li>)
-              )}
-            </ol>
+            <BooksGrid books={ this.state.searchResults }
+                       onMove={ this.props.moveBookToShelf }
+                       findBookOnShelf={ this.findBookOnShelf }
+            />
           }
         </div>
       </div>
